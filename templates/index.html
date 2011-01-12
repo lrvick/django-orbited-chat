@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <title>Orbits Djangos and Stomps oh my!</title>
+        <link href="/static/css/default.css" media="screen" rel="stylesheet" type="text/css" /> 
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+        <script src="http://{{ orbited_server }}:{{ orbited_port }}/static/Orbited.js"></script>
+        <script src="http://{{ orbited_server }}:{{ orbited_port }}/static/protocols/stomp/stomp.js"></script>
+        <script>
+            document.domain = document.domain;
+            Orbited.settings.port = {{ orbited_port }};
+            Orbited.settings.hostname = document.domain;
+            TCPSocket = Orbited.TCPSocket
+            $(document).ready(function() {
+                stomp = new STOMPClient();
+                stomp.onerror = function(error) {
+                    alert("Error:" + error);
+                };
+                stomp.onclose = function(c) {
+                    alert("Lost connection, Code:" + c);
+                };
+                stomp.onconnectedframe = function(){
+                    try { console.log('Connected. Subscribing'); } catch (e) {console = {log: function () {}};}
+                    stomp.subscribe("/messages");
+                };
+                stomp.onmessageframe = function(frame){
+                    function add_message(msg) {
+                        $("<p>" + msg["time"] + " | " + msg["user"] + " : " + msg["message"] + "</p>").appendTo("#messages")
+                    };
+                    add_message(JSON.parse(frame.body));
+                    $('#messages').animate({
+                        scrollTop: $('#messages').get(0).scrollHeight
+                    }, 1500);
+                };
+                setTimeout(function () {
+                    stomp.connect(document.domain, {{ orbited_stomp_port }});
+                }, 500);
+                $("#send").click(function(data) {
+                    var message = $("#message").val()
+                    var user = $("#user").val()
+                    $.post("/addMessage/", {"message":message, "user":user});
+                    $("#message").val("")
+                })
+                $("input").bind("keydown", function(event) {
+                    var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
+                    if (keycode == 13) {
+                        document.getElementById('send').click();
+                        return false;
+                    } else  {
+                        return true;
+                    }
+                });
+                $('#messages').scrollTop($('#messages').get(0).scrollHeight);
+            });
+        </script>
+    </head>
+    <body id="index">
+        <div id="messages">
+            {% for message in messages %}
+                <p>{{message.time|date:"H:i-d/m/Y"}} | {{message.user}} : {{message.body}}</p>
+            {% endfor %}
+        </div>
+        <div id="new_message">
+            <input placeholder="Your nick" type="text" name="user" value="" id="user">
+            <input placeholder="Message" type="text" name="message" value="" id="message">  
+            <input type="submit" id="send" value="Send">
+        </div>
+    </body>
+</html>

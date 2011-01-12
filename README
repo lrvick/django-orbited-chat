@@ -1,0 +1,24 @@
+ Django-Orbited-Chat < http://github.com/lrvick/django-orbited-chat >
+
+WHAT IS DJANGO-ORBITED-CHAT?
+    A simple chat application I wrote in order to learn basic relationships
+    between orbited, django and Stomp, with a bit of jquery to tie it 
+    together.
+    
+    It probably will not see much future development but it is here for 
+    anyone who wants to experiment with comet in Django 
+
+CURRENT FEATURES:
+
+ * Ability to store and view all chat messages
+
+ * Simple Interface that fills the browser window of most browser sizes.
+
+ * Uses Comet via Orbited/Stomp to scale to a large number of clients
+
+NOTES
+
+	This is by no means production-ready code. Do not actually use it in
+	production unless you wish to be eaten by a grue.
+
+	Questions/Comments? Please check us out on IRC via irc://udderweb.com/#uw

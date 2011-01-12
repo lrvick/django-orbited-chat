@@ -1,0 +1,65 @@
+* {
+    margin:0;
+    padding:0;
+    border:0;
+    font-family:sans-serif;
+}
+body {
+    display:block;
+    margin:0;
+    padding:0;
+    height:100%;
+    max-height:100%;
+    background:black;
+    color:white;
+}
+div#new_message {
+    display:table;
+    margin:0;
+    padding:0;
+    height:3%;
+    line-height:100%;
+    width:100%;
+}           
+div#messages{
+    margin:0;
+    padding:0;
+    height:97%;
+    overflow:auto;
+    line-height:20px;
+}
+div#messages p {
+    display:block;
+    border-bottom:1px #111 dotted;
+    height:30px;
+    line-height:30px;
+}
+input {
+    line-height:100%;
+    text-indent:10px;
+    display:table-cell;
+    vertical-align:bottom;
+}
+input[placeholder]{
+    line-height:100%;
+    text-indent:10px;
+}
+input#user {
+    height:100%;
+    width:15%;
+    text-indent:10px;
+    background:#111;
+}
+input#message {
+    height:100%;
+    width:75%;
+    text-indent:10px;
+    background:#222;
+    color:#666;
+}
+input#send {
+    height:100%;
+    width:10%;
+    color:#666;
+    background:#111;
+}
